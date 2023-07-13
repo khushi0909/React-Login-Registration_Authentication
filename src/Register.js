@@ -3,9 +3,11 @@ import React from 'react'
 import {useRef,useState,useEffect} from "react";
 import {faCheck ,faTimes,faInfoCircle} from "@fortawesome/free-solid-svg-icons"
 import {FontAwesomeIcon}  from "@fortawesome/react-fontawesome"
+import axios from './api/axios';
 
 
 const USER_REGEX = /^[A-z][A-z0-9-_]{3,23}$/;
+const REGISTER_URL='/register'
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
 
 
@@ -68,8 +70,37 @@ const handleSubmit = async (e) => {
         setErrMsg("Invalid Entry");
         return;
                     }
-                    console.log("user and pswd state ",user,pwd )
-setSuccess(true)
+                   try{
+                    const  response = await axios.post(REGISTER_URL),
+
+                    //!provide the payload the data you are sending in JSON>Stringify -2 properties destructured -this is because the backend will be expecting the property name user and the property name pwd ,if we have named our state the username we would have to do{user:username,pwd} because the backend must be expecting the user property not the user naem property and if you would have name password as its spelling then it would have been like this as pwd:password 
+
+                    //THird parameter in the post will b e the object  and inside that we need to specify the headers and headers has its own objec t
+
+                    JSON.stringify({user,pwd}),
+                    {
+                        headers: { 'Content-Type': 'application/json' },
+                        withCredentials: true
+                    };
+                    console.log(response.data);
+                    // console.log(response.accessToken);
+                    console.log(JSON.stringify(response))
+                    setSuccess(true);
+
+                    //!clearinput field if you want to 
+
+                   }catch(err){
+                    if (!err?.response) {
+                        setErrMsg('No Server Response');
+                    } else if (err.response?.status === 409) {
+                        setErrMsg('Username Taken');
+                    } else {
+                        setErrMsg('Registration Failed')
+                    }
+                    errRef.current.focus();
+                }
+
+                   }
 }
 
 
