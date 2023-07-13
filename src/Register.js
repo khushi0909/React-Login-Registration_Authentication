@@ -29,8 +29,16 @@ const [matchFocus,setMatchFocus] = useState(false)
 
 useEffect(()=>{
     userRef.current.focus();
-},[])
 
+},[])           ///we apply for setting the focus when the component loads ,thers nothing in the dependency so this will only happen when the component load s and will set the focus on username 
+
+useEffect (() =>{
+    const result = USER_REGEX.test(user);
+    console.log(result);
+    console.log(user);
+    setValidName(result)
+
+},[user])//this will apply to the user name and this is where we validate the user name ,so user state is in the dependency array any time it changes,it will check the validation of that field 
 
 
 
