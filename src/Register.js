@@ -71,7 +71,7 @@ const handleSubmit = async (e) => {
         return;
                     }
                    try{
-                    const  response = await axios.post(REGISTER_URL),
+                    const  response = await axios.post(REGISTER_URL,
 
                     //!provide the payload the data you are sending in JSON>Stringify -2 properties destructured -this is because the backend will be expecting the property name user and the property name pwd ,if we have named our state the username we would have to do{user:username,pwd} because the backend must be expecting the user property not the user naem property and if you would have name password as its spelling then it would have been like this as pwd:password 
 
@@ -81,7 +81,8 @@ const handleSubmit = async (e) => {
                     {
                         headers: { 'Content-Type': 'application/json' },
                         withCredentials: true
-                    };
+                    }
+                    );
                     console.log(response.data);
                     // console.log(response.accessToken);
                     console.log(JSON.stringify(response))
@@ -101,7 +102,7 @@ const handleSubmit = async (e) => {
                 }
 
                    }
-}
+
 
 
 
