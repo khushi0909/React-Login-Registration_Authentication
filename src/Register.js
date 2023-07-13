@@ -40,7 +40,14 @@ useEffect (() =>{
 
 },[user])//this will apply to the user name and this is where we validate the user name ,so user state is in the dependency array any time it changes,it will check the validation of that field 
 
-
+useEffect (()=>{
+    const result = PWD_REGEX.test(pwd);
+    console.log(result);
+    console.log(pwd)
+    setValidPwd(result);
+    const match = pwd === matchPwd;
+    setValidMatch(match)
+},[pwd,matchPwd])
 
   return (
     <div>
