@@ -49,11 +49,51 @@ useEffect (()=>{
     setValidMatch(match)
 },[pwd,matchPwd])
 
+
+useEffect(()=>{
+    setErrMsg('');
+},[user,pwd,matchPwd])   //for err ms g,when we display an error messsage ,but anytime the user changes the information ,changes the state of oen of 3 ,then we will go ahead and clear out the message 
+
   return (
-    <div>
+    <section>
+            <p ref={errRef} className={errMsg?"errMsg" : "offscreen"} aria-live = "assertive"> 
+                {errMsg}
+            </p>       
+             {/* //p displayed at the top of the form ,if the errormags state exist then apply the class errmsg which will display error masg otherwise we will apply the class offscreen which will take the whole  p positioned absolutely way off the screen ,but still be available to screen readers instead off dsispaly none and totally gone offf from the screen  */}
+            {/* aria live aaertive meeans when we set the focus on this element that as ref of errref it will be announced on the screen with a screen reader  */}
+                <h1>Register</h1>
+                <form>
+                    <label htmlFor="username">
+                        Username:
+                        <span className = {validName?"valid" : 'hide'}>
+                            <FontAwesomeIcon icon={faCheck}/>
+                        </span>
+                        <span className={validName || !user ? "hide" : "invalid"}>
+                            <FontAwesomeIcon icon = {faTimes}/>
+
+                        </span>
+                    </label>
+                    <input
+                    type='text'
+                    id='username'
+                    ref={userRef}
+                    autoComplete='off'
+                    onChange={(e)=>setUser(e.target.value)}//
+                    required
+                    aria-invalid={validName?"false" : "true"}// will be set to true whrn the comp loads becoz we will not have the vallid username ,this lets the screen reader announce weather the input field needs the adjusted before the form is accepted
+                    aria-describeby = "uidnote" //lets us provide the another element that describes the input field ,so a screen reader wll read the label first and will read what type of field the label is addressing here its text .then it will also read th aria-invalid weather it has valid input or not and then it will jump tot he aria described by the element to give a full description and this is where we can put in the requirements ,that our registration form needs and have a screen reader read those 
+                    onFocus={()=> setUserFocus(true)}
+                    onBlur={ () => setUserFocus(false)} />
 
 
-    </div>
+                    <p id="uidnote" className={userFocus && user && !validName ? "instructions" : "offscreen"}>
+                        <FontAwesomeIcon icon = {faInfoCircle}/>
+                        4 to 24 characters. <br/>
+                        Must begin with a letter .<br/>
+                        Letters,numbers,underscores,hyphens allowed .
+                    </p>
+                </form>
+    </section>
   )
 }
 
